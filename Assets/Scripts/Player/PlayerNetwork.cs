@@ -3,37 +3,38 @@ using Unity.Netcode;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-    private readonly NetworkVariable<PlayerNetworkData> NetState = new NetworkVariable<PlayerNetworkData>(
+    private readonly NetworkVariable<PlayerNetworkData> netState = new NetworkVariable<PlayerNetworkData>(
         writePerm: NetworkVariableWritePermission.Owner
     );
-    private Vector3 Velocity;
-    private float RotationVelocity;
-    [SerializeField] private float InterpolationTime = 0.1f;
+    
+    [SerializeField] private float interpolationTime = 0.1f;
+    private Vector3 velocity;
+    private float rotationVelocity;
 
     void Update()
     {
         if (IsOwner)
         {   // WRITE
-            NetState.Value = new PlayerNetworkData() {
-                Position = transform.position,
-                Rotation = transform.rotation.eulerAngles
+            netState.Value = new PlayerNetworkData() {
+                position = transform.position,
+                rotation = transform.rotation.eulerAngles
             };
         }
         else
         {   // READ
             transform.position = Vector3.SmoothDamp(
                 transform.position,
-                NetState.Value.Position,
-                ref Velocity,
-                InterpolationTime
+                netState.Value.position,
+                ref velocity,
+                interpolationTime
             );
             transform.rotation = Quaternion.Euler(
                 0,
                 Mathf.SmoothDampAngle(
                     transform.rotation.eulerAngles.y,
-                    NetState.Value.Rotation.y,
-                    ref RotationVelocity,
-                    InterpolationTime
+                    netState.Value.rotation.y,
+                    ref rotationVelocity,
+                    interpolationTime
                 ),
                 0
             );
@@ -42,28 +43,43 @@ public class PlayerNetwork : NetworkBehaviour
 
     struct PlayerNetworkData : INetworkSerializable
     {
-        private float _x, _z, _rot;
+        // position & rotation
+        private float x, z, rot;
 
-        internal Vector3 Position
+        // health
+        private float redH, grayH;
+
+        internal Vector2 health
         {
-            get => new Vector3(_x, 0, _z);
+            get => new Vector2(redH, grayH);
             set {
-                _x = value.x;
-                _z = value.z;
+                redH = value.x;
+                grayH = value.y;
             }
         }
 
-        internal Vector3 Rotation
+        internal Vector3 position
         {
-            get => new Vector3(0, _rot, 0);
-            set => _rot = value.y;
+            get => new Vector3(x, 0, z);
+            set {
+                x = value.x;
+                z = value.z;
+            }
+        }
+
+        internal Vector3 rotation
+        {
+            get => new Vector3(0, rot, 0);
+            set => rot = value.y;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref _x);
-            serializer.SerializeValue(ref _z);
-            serializer.SerializeValue(ref _rot);
+            serializer.SerializeValue(ref x);
+            serializer.SerializeValue(ref z);
+            serializer.SerializeValue(ref rot);
+            serializer.SerializeValue(ref redH);
+            serializer.SerializeValue(ref grayH);
         }
     }
 }
