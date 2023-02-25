@@ -29,6 +29,14 @@ MonoBehaviour:
     m_Address: CanvasUtilities
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 304cad1d5e8b2a64a8c699b9be625434
+    m_Address: PlayerMelee
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: da0f15ce50829324fbbba7697a72e74e
+    m_Address: PlayerRanged
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0d50857c577afb6438bf867f31a49ece, type: 2}
   m_SchemaSet:

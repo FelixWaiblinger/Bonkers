@@ -4,11 +4,11 @@ using Unity.Netcode;
 public class PlayerAttackRanged : NetworkBehaviour
 {
     [SerializeField] private GameObject projectileType;
+    [SerializeField] private Transform spawner;
     [SerializeField] private float projectileSpeed = 700f;
     [SerializeField] private float projectileRange = 2f;
-    [SerializeField] private float cooldown = 1f;
-    [SerializeField] private Transform spawner;
     [SerializeField] private int strength = 1;
+    [SerializeField] private float cooldown = 1f;
 
     private float lastFired = float.MinValue;
 
@@ -26,7 +26,7 @@ public class PlayerAttackRanged : NetworkBehaviour
 
             // fire locally
             ShootProjectile(direction, projectileRange);
-        }        
+        }
     }
 
     [ServerRpc]

@@ -2,30 +2,30 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] PlayerInfo playerInfo;
-    [SerializeField] private int maxHealth = 10;
-    private int currentHealth;
+    [SerializeField] private PlayerInfo _playerInfo;
+    [SerializeField] private int _maxHealth = 10;
+    private int _currentHealth;
 
     void Start()
     {
-        currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
 
-        playerInfo.UpdateHealth(maxHealth, currentHealth);
+        _playerInfo.UpdateHealth(_maxHealth, _currentHealth);
     }
 
     public void ApplyDamage(int damage)
     {
-        currentHealth -= damage;
+        _currentHealth -= damage;
 
-        if (currentHealth > 0)
+        if (_currentHealth > 0)
         {
             // TODO hit effects
-            playerInfo.UpdateHealth(maxHealth, currentHealth);
+            _playerInfo.UpdateHealth(_maxHealth, _currentHealth);
         }
         else
         {
             // TODO death animation
-            playerInfo.UpdateHealth(maxHealth, 0);
+            _playerInfo.UpdateHealth(_maxHealth, 0);
         }
     }
 }

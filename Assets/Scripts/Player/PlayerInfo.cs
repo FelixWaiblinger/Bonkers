@@ -1,51 +1,54 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using TMPro;
 
 public class PlayerInfo : NetworkBehaviour
 {
-    [SerializeField] private Canvas canvas;
-
-    [SerializeField] private Image redHealth;
-    [SerializeField] private Image grayHealth;
-    [SerializeField] private float redDecaySpeed = 2f;
-    [SerializeField] private float grayDecaySpeed = 1f;
-    [SerializeField] private float grayDelayTime = 1f;
-    private float target = 1f;
-    private float grayHealthTimer = 0f;
-    private Camera cam;
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Transform _playerInfo;
+    [SerializeField] private TMP_Text _playerName;
+    [SerializeField] private Image _redHealth;
+    [SerializeField] private Image _grayHealth;
+    [SerializeField] private float _redDecaySpeed = 2f;
+    [SerializeField] private float _grayDecaySpeed = 1f;
+    [SerializeField] private float _grayDelayTime = 1f;
+    private float _targetHealth = 1f;
+    private float _grayHealthTimer = 0f;
+    private Transform _playerCamera;
 
     void Start()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        _playerName.text = _playerData.name;
     }
 
     void Update()
     {
         // billboard effect
-        if (cam != null)
-            canvas.transform.rotation = cam.transform.rotation;
+        if (_playerCamera != null)
+            _playerInfo.rotation = _playerCamera.rotation;
         else
         {
             Debug.Log("Look for camera");
-            cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         }
 
         // update red health bar
-        redHealth.fillAmount = Mathf.MoveTowards(
-            redHealth.fillAmount,
-            target,
-            redDecaySpeed * Time.deltaTime
+        _redHealth.fillAmount = Mathf.MoveTowards(
+            _redHealth.fillAmount,
+            _targetHealth,
+            _redDecaySpeed * Time.deltaTime
         );
 
         // update gray health bar
-        if (grayHealthTimer > 0)
-            grayHealthTimer -= Time.deltaTime;
+        if (_grayHealthTimer > 0)
+            _grayHealthTimer -= Time.deltaTime;
         else
-            grayHealth.fillAmount = Mathf.MoveTowards(
-                grayHealth.fillAmount,
-                target,
-                grayDecaySpeed * Time.deltaTime
+            _grayHealth.fillAmount = Mathf.MoveTowards(
+                _grayHealth.fillAmount,
+                _targetHealth,
+                _grayDecaySpeed * Time.deltaTime
             );
 
     }
@@ -65,8 +68,8 @@ public class PlayerInfo : NetworkBehaviour
     // set new target percentage for health bars
     public void UpdateHealth(int maxHealth, int currentHealth)
     {
-        target = currentHealth / (float)maxHealth;
-        grayHealthTimer = grayDelayTime;
+        _targetHealth = currentHealth / (float)maxHealth;
+        _grayHealthTimer = _grayDelayTime;
         if (IsOwner) UpdateHealthServerRpc(maxHealth, currentHealth);
     }
 }

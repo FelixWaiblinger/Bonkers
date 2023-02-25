@@ -6,7 +6,7 @@ public class PlayerNetwork : NetworkBehaviour
     private readonly NetworkVariable<PlayerNetworkData> netState = new NetworkVariable<PlayerNetworkData>(
         writePerm: NetworkVariableWritePermission.Owner
     );
-    
+
     [SerializeField] private float interpolationTime = 0.1f;
     private Vector3 velocity;
     private float rotationVelocity;
@@ -46,18 +46,6 @@ public class PlayerNetwork : NetworkBehaviour
         // position & rotation
         private float x, z, rot;
 
-        // health
-        private float redH, grayH;
-
-        internal Vector2 health
-        {
-            get => new Vector2(redH, grayH);
-            set {
-                redH = value.x;
-                grayH = value.y;
-            }
-        }
-
         internal Vector3 position
         {
             get => new Vector3(x, 0, z);
@@ -78,8 +66,6 @@ public class PlayerNetwork : NetworkBehaviour
             serializer.SerializeValue(ref x);
             serializer.SerializeValue(ref z);
             serializer.SerializeValue(ref rot);
-            serializer.SerializeValue(ref redH);
-            serializer.SerializeValue(ref grayH);
         }
     }
 }
