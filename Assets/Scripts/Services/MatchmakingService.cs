@@ -52,21 +52,21 @@ public static class MatchmakingService {
 
     public static async Task CreateLobbyWithAllocation(LobbyData data) {
         // Create a relay allocation and generate a join code to share with the lobby
-        var a = await RelayService.Instance.CreateAllocationAsync(data.MaxPlayers);
+        var a = await RelayService.Instance.CreateAllocationAsync(data.maxPlayers);
         var joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
 
         // Create a lobby, adding the relay join code to the lobby data
         var options = new CreateLobbyOptions {
             Data = new Dictionary<string, DataObject> {
                 { Constants.JoinKey, new DataObject(DataObject.VisibilityOptions.Member, joinCode) },
-                { Constants.GameTypeKey, new DataObject(DataObject.VisibilityOptions.Public, data.Type.ToString(), DataObject.IndexOptions.N1) }, {
-                    Constants.DifficultyKey,
-                    new DataObject(DataObject.VisibilityOptions.Public, data.Difficulty.ToString(), DataObject.IndexOptions.N2)
-                }
+                { Constants.GameModeKey, new DataObject(DataObject.VisibilityOptions.Public, data.gameMode.ToString(), DataObject.IndexOptions.N1) },
+                { Constants.ChampionTypeKey,
+                  new DataObject(DataObject.VisibilityOptions.Public, data.championType.ToString(), DataObject.IndexOptions.N2) },
+                // { "PlayerName", new DataObject(DataObject.VisibilityOptions.Public, data.playerName, DataObject.IndexOptions.N3) },
             }
         };
 
-        _currentLobby = await Lobbies.Instance.CreateLobbyAsync(data.Name, data.MaxPlayers, options);
+        _currentLobby = await Lobbies.Instance.CreateLobbyAsync(data.lobbyName, data.maxPlayers, options);
 
         Transport.SetHostRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData);
 
