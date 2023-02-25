@@ -4,10 +4,10 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class LobbyRoomPanel : MonoBehaviour {
-    [SerializeField] private float _difficultyDialMaxAngle = 100f;
+    [SerializeField] private float _playerCountDialMaxAngle = 100f;
 
     [SerializeField] private TMP_Text _nameText, _typeText, _playerCountText;
-    [SerializeField] private Transform _difficultyMeter;
+    [SerializeField] private Transform _playerCountMeter;
 
     public Lobby Lobby { get; private set; }
 
@@ -20,10 +20,10 @@ public class LobbyRoomPanel : MonoBehaviour {
     public void UpdateDetails(Lobby lobby) {
         Lobby = lobby;
         _nameText.text = lobby.Name;
-        _typeText.text = Constants.GameTypes[GetValue(Constants.GameTypeKey)];
+        _typeText.text = Constants.GameModes[GetValue(Constants.GameModeKey)];
 
-        var point = Mathf.InverseLerp(0, Constants.Difficulties.Count - 1, GetValue(Constants.DifficultyKey));
-        _difficultyMeter.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(_difficultyDialMaxAngle, -_difficultyDialMaxAngle, point));
+        var point = Mathf.InverseLerp(0, GetValue(Constants.ChampionTypeKey), lobby.Players.Count);
+        _playerCountMeter.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(_playerCountDialMaxAngle, -_playerCountDialMaxAngle, point));
 
         _playerCountText.text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
 

@@ -6,9 +6,9 @@ public class LobbyPlayerPanel : MonoBehaviour {
 
     public ulong PlayerId { get; private set; }
 
-    public void Init(ulong playerId) {
+    public void Init(ulong playerId, string playerName) {
         PlayerId = playerId;
-        _nameText.text = $"Player {playerId}";
+        _nameText.text = $"{playerName}";
     }
 
     public void SetReady() {
