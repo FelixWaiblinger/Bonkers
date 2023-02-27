@@ -684,6 +684,8 @@ GameObject:
   - component: {fileID: 5389461217074873087}
   - component: {fileID: 6573896423098948470}
   - component: {fileID: 2647916585235134339}
+  - component: {fileID: 5121885823681227298}
+  - component: {fileID: 8369261841959230957}
   m_Layer: 0
   m_Name: PlayerMelee
   m_TagString: Untagged
@@ -841,6 +843,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInfo: {fileID: 6573896423098948470}
   _maxHealth: 10
+--- !u!114 &5121885823681227298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398084713552180716}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18ed258f3bc138d4ca48e18b6f2097b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: {fileID: 0}
+  spawner: {fileID: 0}
+  weaponSpeed: 2
+  weaponRange: 1
+  strength: 1
+  cooldown: 1
+--- !u!114 &8369261841959230957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398084713552180716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d042a3179e3d11a49874f5b4f7508bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: {x: 0, y: 10, z: -8}
+  _rotationX: 60
 --- !u!1 &9060864131841032677
 GameObject:
   m_ObjectHideFlags: 0
