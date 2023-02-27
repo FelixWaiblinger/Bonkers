@@ -20,7 +20,7 @@ public class PlayerInfo : NetworkBehaviour
     void Start()
     {
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        _playerName.text = _playerData.name;
+        _playerName.text = _playerData.playerName;
     }
 
     void Update()
