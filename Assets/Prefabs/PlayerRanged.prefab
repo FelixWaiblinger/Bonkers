@@ -398,37 +398,6 @@ MonoBehaviour:
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &5297607063699792843
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7023399107072023689}
-  m_Layer: 0
-  m_Name: ProjectileSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7023399107072023689
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297607063699792843}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4623204053847205361}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5651289568622608698
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +736,7 @@ GameObject:
   - component: {fileID: 5389461217074873087}
   - component: {fileID: 6573896423098948470}
   - component: {fileID: 2647916585235134339}
-  - component: {fileID: 8752275530414201674}
+  - component: {fileID: 8243646009009646440}
   - component: {fileID: 2758802046185828465}
   m_Layer: 0
   m_Name: PlayerRanged
@@ -790,7 +759,6 @@ Transform:
   m_Children:
   - {fileID: 3948798749549302351}
   - {fileID: 8324467717554851946}
-  - {fileID: 7023399107072023689}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -890,8 +858,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d91a11c60258b4f93716859913017c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 7613080476139838162}
-  movementSpeed: 0.1
+  _visuals: {fileID: 3948798749549302351}
+  _rigidBody: {fileID: 7613080476139838162}
+  _movementSpeed: 0.1
 --- !u!114 &6573896423098948470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,7 +895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInfo: {fileID: 6573896423098948470}
   _maxHealth: 10
---- !u!114 &8752275530414201674
+--- !u!114 &8243646009009646440
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -935,16 +904,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8398084713552180716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef5a7a2e3045e84da72a43035bf8915, type: 3}
+  m_Script: {fileID: 11500000, guid: c2abced327123544db73f50e852e6851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 5293078768203174952, guid: 6b1eb2309fc5aae4a83cedb1491e4454,
+  _attackType: {fileID: 8804107515121393557, guid: 6b1eb2309fc5aae4a83cedb1491e4454,
     type: 3}
-  spawner: {fileID: 7023399107072023689}
-  projectileSpeed: 20
-  projectileRange: 8
-  strength: 1
-  cooldown: 0.5
+  _projectileSpeed: 10
+  _projectileRange: 2
+  _strength: 1
+  _cooldown: 1
+  _attackLockTime: 0.1
+  _spawnOffset: 1
 --- !u!114 &2758802046185828465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -957,5 +927,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d042a3179e3d11a49874f5b4f7508bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: 10, z: -8}
-  _rotationX: 60
