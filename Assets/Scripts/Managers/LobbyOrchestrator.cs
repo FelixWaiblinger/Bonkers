@@ -15,6 +15,8 @@ public class LobbyOrchestrator : NetworkBehaviour {
     [SerializeField] private MainLobbyScreen _mainLobbyScreen;
     [SerializeField] private CreateLobbyScreen _createScreen;
     [SerializeField] private RoomScreen _roomScreen;
+    [SerializeField] private LobbyData _lobbyData;
+    [SerializeField] private PlayerData _playerData;
 
     private void Start() {
         _mainLobbyScreen.gameObject.SetActive(true);
@@ -48,13 +50,11 @@ public class LobbyOrchestrator : NetworkBehaviour {
         }
     }
 
- 
-
     #endregion
 
     #region Create
 
-    private async void CreateLobby(LobbyData data) {
+    private async void CreateLobby(LobbyInfo data) {
         using (new Load("Creating Lobby...")) {
             try {
                 await MatchmakingService.CreateLobbyWithAllocation(data);
@@ -83,37 +83,56 @@ public class LobbyOrchestrator : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         if (IsServer) {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+            _playersInLobby.Remove(NetworkManager.Singleton.LocalClientId);
             _playersInLobby.Add(NetworkManager.Singleton.LocalClientId, false);
             UpdateInterface();
         }
 
         // Client uses this in case host destroys the lobby
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
-
- 
     }
 
     private void OnClientConnectedCallback(ulong playerId) {
         if (!IsServer) return;
 
         // Add locally
-        if (!_playersInLobby.ContainsKey(playerId)) _playersInLobby.Add(playerId, false);
+        if (!_playersInLobby.ContainsKey(playerId))
+            _playersInLobby.Add(playerId, false);
 
+        // send client specific info to a single client
+        ClientRpcParams rpcParams = default;
+        rpcParams.Send.TargetClientIds = new ulong[]{playerId};
+        UpdateLobbyInfoTargetClientRpc(playerId, _lobbyData.gameMode, _lobbyData.teamSize, rpcParams);
+
+        // update all clients on ready states
         PropagateToClients();
 
         UpdateInterface();
     }
 
-    private void PropagateToClients() {
-        foreach (var player in _playersInLobby) UpdatePlayerClientRpc(player.Key, player.Value);
+    // send a specific client its client id
+    [ClientRpc]
+    private void UpdateLobbyInfoTargetClientRpc(ulong id, string mode, int size, ClientRpcParams rpcParams)
+    {
+        _lobbyData.clientId = id;
+        _lobbyData.gameMode = mode;
+        _lobbyData.teamSize = size;
+    }
+
+    private void PropagateToClients()
+    {
+        foreach (var player in _playersInLobby)
+            UpdatePlayerStatusClientRpc(player.Key, player.Value);
     }
 
     [ClientRpc]
-    private void UpdatePlayerClientRpc(ulong clientId, bool isReady) {
+    private void UpdatePlayerStatusClientRpc(ulong clientId, bool isReady)
+    {
         if (IsServer) return;
 
         if (!_playersInLobby.ContainsKey(clientId)) _playersInLobby.Add(clientId, isReady);
         else _playersInLobby[clientId] = isReady;
+
         UpdateInterface();
     }
 

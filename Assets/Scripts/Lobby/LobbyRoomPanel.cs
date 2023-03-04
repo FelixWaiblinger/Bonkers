@@ -13,16 +13,18 @@ public class LobbyRoomPanel : MonoBehaviour {
 
     public static event Action<Lobby> LobbySelected;
 
-    public void Init(Lobby lobby) {
+    public void Init(Lobby lobby)
+    {
         UpdateDetails(lobby);
     }
 
-    public void UpdateDetails(Lobby lobby) {
+    public void UpdateDetails(Lobby lobby)
+    {
         Lobby = lobby;
         _nameText.text = lobby.Name;
         _typeText.text = Constants.GameModes[GetValue(Constants.GameModeKey)];
 
-        var point = Mathf.InverseLerp(0, GetValue(Constants.ChampionTypeKey), lobby.Players.Count);
+        var point = Mathf.InverseLerp(0, lobby.MaxPlayers, lobby.Players.Count);
         _playerCountMeter.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(_playerCountDialMaxAngle, -_playerCountDialMaxAngle, point));
 
         _playerCountText.text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
@@ -32,7 +34,8 @@ public class LobbyRoomPanel : MonoBehaviour {
         }
     }
 
-    public void Clicked() {
+    public void Clicked()
+    {
         LobbySelected?.Invoke(Lobby);
     }
 }

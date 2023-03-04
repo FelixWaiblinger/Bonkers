@@ -651,8 +651,7 @@ GameObject:
   - component: {fileID: 4383264312130265440}
   - component: {fileID: 8491861661057331724}
   - component: {fileID: 5389461217074873087}
-  - component: {fileID: 6573896423098948470}
-  - component: {fileID: 2647916585235134339}
+  - component: {fileID: 3034802959695109670}
   - component: {fileID: 2043402374883408801}
   - component: {fileID: 8369261841959230957}
   m_Layer: 0
@@ -778,7 +777,7 @@ MonoBehaviour:
   _visuals: {fileID: 3948798749549302351}
   _rigidBody: {fileID: 7613080476139838162}
   _movementSpeed: 0.1
---- !u!114 &6573896423098948470
+--- !u!114 &3034802959695109670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -791,6 +790,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: b1fbd5346fbad294792302ed2a63b4cd, type: 2}
+  _lobbyData: {fileID: 11400000, guid: 86e86a6bfe2ac4a4aba172c9a5e002c7, type: 2}
+  _maxHealth: 10
   _playerInfo: {fileID: 8324467717554851946}
   _playerName: {fileID: 2575440830534074271}
   _redHealth: {fileID: 4126060460286784774}
@@ -798,20 +799,6 @@ MonoBehaviour:
   _redDecaySpeed: 2
   _grayDecaySpeed: 1
   _grayDelayTime: 1
---- !u!114 &2647916585235134339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8398084713552180716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a2542a30fa20648bdcdcb49c2df2ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInfo: {fileID: 6573896423098948470}
-  _maxHealth: 10
 --- !u!114 &2043402374883408801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -830,7 +817,7 @@ MonoBehaviour:
   _projectileRange: 1
   _strength: 2
   _cooldown: 1
-  _attackLockTime: 0.5
+  _attackLockTime: 0.4
   _spawnOffset: 1
 --- !u!114 &8369261841959230957
 MonoBehaviour:

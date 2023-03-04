@@ -735,7 +735,6 @@ GameObject:
   - component: {fileID: 8491861661057331724}
   - component: {fileID: 5389461217074873087}
   - component: {fileID: 6573896423098948470}
-  - component: {fileID: 2647916585235134339}
   - component: {fileID: 8243646009009646440}
   - component: {fileID: 2758802046185828465}
   m_Layer: 0
@@ -874,6 +873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: b1fbd5346fbad294792302ed2a63b4cd, type: 2}
+  _maxHealth: 10
   _playerInfo: {fileID: 8324467717554851946}
   _playerName: {fileID: 2575440830534074271}
   _redHealth: {fileID: 4126060460286784774}
@@ -881,20 +881,6 @@ MonoBehaviour:
   _redDecaySpeed: 2
   _grayDecaySpeed: 1
   _grayDelayTime: 1
---- !u!114 &2647916585235134339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8398084713552180716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a2542a30fa20648bdcdcb49c2df2ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInfo: {fileID: 6573896423098948470}
-  _maxHealth: 10
 --- !u!114 &8243646009009646440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,7 +896,7 @@ MonoBehaviour:
   _attackType: {fileID: 8804107515121393557, guid: 6b1eb2309fc5aae4a83cedb1491e4454,
     type: 3}
   _projectileSpeed: 10
-  _projectileRange: 2
+  _projectileRange: 5
   _strength: 1
   _cooldown: 1
   _attackLockTime: 0.1

@@ -50,7 +50,7 @@ public static class MatchmakingService {
         return allLobbies.Results;
     }
 
-    public static async Task CreateLobbyWithAllocation(LobbyData data) {
+    public static async Task CreateLobbyWithAllocation(LobbyInfo data) {
         // Create a relay allocation and generate a join code to share with the lobby
         var a = await RelayService.Instance.CreateAllocationAsync(data.maxPlayers);
         var joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
@@ -60,9 +60,6 @@ public static class MatchmakingService {
             Data = new Dictionary<string, DataObject> {
                 { Constants.JoinKey, new DataObject(DataObject.VisibilityOptions.Member, joinCode) },
                 { Constants.GameModeKey, new DataObject(DataObject.VisibilityOptions.Public, data.gameMode.ToString(), DataObject.IndexOptions.N1) },
-                { Constants.ChampionTypeKey,
-                  new DataObject(DataObject.VisibilityOptions.Public, data.championType.ToString(), DataObject.IndexOptions.N2) },
-                // { "PlayerName", new DataObject(DataObject.VisibilityOptions.Public, data.playerName, DataObject.IndexOptions.N3) },
             }
         };
 
