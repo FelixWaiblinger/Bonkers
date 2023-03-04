@@ -5,8 +5,6 @@ Bonkers is a 3D Online Multiplayer Arena Deathmatch / Battle Royal game.
 ## TODO
 - Abilities (UI and choices similar to skill tree)
 - Win condition
-- Teams
-- Melee attacks
 - Support player type
 - Create first map
 - Add models (rigging, animation, etc)
