@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
@@ -5,7 +6,12 @@ using TMPro;
 
 public class PlayerInfo : NetworkBehaviour
 {
+    // player data
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private int _maxHealth = 10;
+    private int _currentHealth;
+
+    // visuals
     [SerializeField] private Transform _playerInfo;
     [SerializeField] private TMP_Text _playerName;
     [SerializeField] private Image _redHealth;
@@ -17,10 +23,26 @@ public class PlayerInfo : NetworkBehaviour
     private float _grayHealthTimer = 0f;
     private Transform _playerCamera;
 
-    void Start()
+    public static event Action<int> PlayerDeathEvent;
+
+    private void OnEnable()
+    {
+        GameManager.OnPlayerSpawned += Init;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnPlayerSpawned -= Init;
+    }
+
+    private void Init()
     {
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        _playerName.text = _playerData.playerName;
+        _playerName.text = gameObject.name;
+        _currentHealth = _maxHealth;
+
+        UpdateHealth(_maxHealth, _currentHealth);
+        if (IsOwner) UpdateHealthServerRpc(_maxHealth, _currentHealth);
     }
 
     void Update()
@@ -29,10 +51,7 @@ public class PlayerInfo : NetworkBehaviour
         if (_playerCamera != null)
             _playerInfo.rotation = _playerCamera.rotation;
         else
-        {
-            Debug.Log("Look for camera");
             _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        }
 
         // update red health bar
         _redHealth.fillAmount = Mathf.MoveTowards(
@@ -66,10 +85,27 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     // set new target percentage for health bars
-    public void UpdateHealth(int maxHealth, int currentHealth)
+    private void UpdateHealth(int maxHealth, int currentHealth)
     {
         _targetHealth = currentHealth / (float)maxHealth;
         _grayHealthTimer = _grayDelayTime;
         if (IsOwner) UpdateHealthServerRpc(maxHealth, currentHealth);
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        // TODO calculate actual damage
+        _currentHealth -= damage;
+
+        if (_currentHealth <= 0)
+        {
+            // TODO death animation
+            _currentHealth = 0;
+            PlayerDeathEvent.Invoke(gameObject.layer - 20);
+        }
+
+        // TODO hit effects
+        UpdateHealth(_maxHealth, _currentHealth);
+        if (IsOwner) UpdateHealthServerRpc(_maxHealth, _currentHealth);
     }
 }

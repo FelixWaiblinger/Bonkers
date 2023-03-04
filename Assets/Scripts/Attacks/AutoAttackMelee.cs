@@ -5,9 +5,9 @@ using UnityEngine;
 public class AutoAttackMelee : Projectile
 {
     private Quaternion _targetRotation;
+
     void Start()
     {
-        Debug.Log("SpawnRotation: " + transform.rotation.eulerAngles.y);
         _targetRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y - 45, 0);
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + 45, 0);
     }
@@ -27,7 +27,7 @@ public class AutoAttackMelee : Projectile
         if (other.gameObject.layer == LayerMask.NameToLayer("Environment"))
             Destroy(gameObject);
 
-        else if (other.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        else if (other.gameObject.TryGetComponent<PlayerInfo>(out var player))
         {
             // TODO check if enemy or self/team
             player.ApplyDamage(_damage);

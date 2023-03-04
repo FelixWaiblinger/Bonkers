@@ -14,7 +14,6 @@ public class PlayerAttack : NetworkBehaviour
 
     private Camera _camera;
     private Plane _ground = new(Vector3.up, Vector3.zero);
-    private Vector3 _direction = Vector3.zero;
     private float lastFired = float.MinValue;
 
     public static event Action<float> PlayerAttackEvent;
@@ -39,36 +38,35 @@ public class PlayerAttack : NetworkBehaviour
             if (_ground.Raycast(ray, out var enter))
             {
                 var hit = ray.GetPoint(enter);
-                _direction = (hit - transform.position).normalized;
+                var direction = (hit - transform.position).normalized;
 
                 // request to attack on all clients
-                AttackServerRpc();
+                AttackServerRpc(direction);
 
                 // attack locally
-                Attack();
+                Attack(direction);
             }
         }
     }
 
     [ServerRpc]
-    private void AttackServerRpc()
+    private void AttackServerRpc(Vector3 direction)
     {
-        AttackClientRpc();
+        AttackClientRpc(direction);
     }
 
     [ClientRpc]
-    private void AttackClientRpc()
+    private void AttackClientRpc(Vector3 direction)
     {
-        if (!IsOwner) Attack();
+        if (!IsOwner) Attack(direction);
     }
 
-    private void Attack()
+    private void Attack(Vector3 direction)
     {
-        var spawnPosition = transform.position + _direction * _spawnOffset;
+        var spawnPosition = transform.position + direction * _spawnOffset;
+        var attack = Instantiate(_attackType, spawnPosition, Quaternion.LookRotation(direction));
 
-        var attack = Instantiate(_attackType, spawnPosition, Quaternion.LookRotation(_direction));
-
-        attack.Init(_direction * _projectileSpeed, _projectileRange, _strength);
+        attack.Init(direction * _projectileSpeed, _projectileRange, _strength, gameObject.layer);
 
         // TODO shoot effects
     }

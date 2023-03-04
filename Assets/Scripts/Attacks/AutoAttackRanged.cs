@@ -17,7 +17,7 @@ public class AutoAttackRanged : Projectile
         if (other.gameObject.layer == LayerMask.NameToLayer("Environment"))
             Destroy(gameObject);
 
-        else if (other.gameObject.TryGetComponent<PlayerHealth>(out var player))
+        else if (other.gameObject.TryGetComponent<PlayerInfo>(out var player))
         {
             // TODO check if enemy or self/team
             player.ApplyDamage(_damage);

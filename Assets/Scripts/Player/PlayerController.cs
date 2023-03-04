@@ -47,6 +47,8 @@ public class PlayerController : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
+        
         // position-based movement
         _rigidBody.position += _movementInput.normalized * _movementSpeed;
 
